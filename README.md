@@ -3,6 +3,8 @@
 
 The Ouija Board project is a web-based application designed to simulate a Ouija board experience. Users can input a message, and the application will animate a response on the virtual Ouija board. This project combines modern web technologies with a touch of the supernatural to create an engaging user experience.
 
+![Ouija Board Demo](ouija.gif)
+
 ## Features
 
 - **Interactive Ouija Board**: A virtual Ouija board that responds to user input.
