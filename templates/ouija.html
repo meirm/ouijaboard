@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ouija Board</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .ouija-container {
+      max-width: 800px;
+      height: 400px;
+      position: relative;
+      background: black;
+      color: white;
+      font-family: "Courier New", Courier, monospace;
+      margin: auto;
+      padding: 20px;
+    }
+    .ouija-item {
+      position: absolute;
+      text-align: center;
+      width: 30px;
+      height: 30px;
+    }
+    .highlight {
+      border: 2px solid yellow; /* Highlight style */
+    }
+    form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    form input, form button {
+      margin: 5px 0; /* Add some space around inputs and button */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div id="ouijaBoard" class="ouija-container"></div>
+
+  <form id="ouijaForm" class="text-center">
+    <input type="text" id="messageInput" class="form-control my-2" placeholder="Enter your message here">
+    <button type="button" class="btn btn-primary mb-2" onclick="animateMessage()">Send</button>
+    <input type="text" id="messageOutput" class="form-control" placeholder="Server response" readonly>
+  </form>
+</div>
+
+
+
+<script>
+// Define positions for yes, no, alphabet, and numbers
+const ouijaBoard = document.getElementById("ouijaBoard");
+
+// Query the server for a response with the content of the message input field, call animateMessage with the response and display it in the message output field once the animation is done
+async function queryServer() {
+    const message = document.getElementById("messageInput").value;
+    const url = '/api/ouija';
+    const data = { message: message };
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        const responseData = await response.json();
+        return responseData; // This will be a Promise resolving to your actual data
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // Rethrow or handle error as needed
+    }
+}
+
+function animateMessage() {
+    const input = document.getElementById("messageInput").value.toUpperCase(); // Ensure uppercase to match letters
+    document.getElementById("messageOutput").value = "";
+    queryServer().then(data => {
+        animateMessageOutput(data["response"]);
+    }).catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+function animateMessageOutput(output) {
+    output = output.toUpperCase(); // Ensure uppercase to match letters
+    const output_length = output.length;
+    setTimeout(function() {
+        document.getElementById("messageOutput").value = output;
+        document.getElementById("messageInput").value = "";
+    }, output_length * 1100 + 1000);
+    const elements = document.querySelectorAll('.ouija-item');
+    let index = 0;
+  
+    function highlightWord(output) {
+      elements.forEach(elem => {
+        if (elem.innerText === output) {
+          elem.classList.add('highlight');
+          setTimeout(() => {
+            elem.classList.remove('highlight');
+          }, 1000); // Highlight duration
+        }
+      });
+    }
+
+    function highlightNextChar() {
+      if (index < output_length) {
+        const char = output.charAt(index);
+        console.log(char); // Print out the character to the console
+  
+        elements.forEach(elem => {
+          if (elem.innerText === char) {
+            elem.classList.add('highlight');
+            setTimeout(() => {
+              elem.classList.remove('highlight');
+            }, 1000); // Highlight duration
+          }
+        });
+  
+        index++;
+        setTimeout(highlightNextChar, 1100); // Move to next character
+      }
+    }
+
+    switch (output) {
+      case "YES":
+        output = "Yes";
+        highlightWord(output);
+        break;
+      case "NO":
+        output = "No";
+        highlightWord(output);
+        break;
+      case "BYE":
+        output = "Bye";
+        highlightWord(output);
+        break;
+      default:
+        highlightNextChar();
+        break;
+    }
+
+
+    
+  
+    
+  }
+  
+
+function positionElements() {
+  // Yes and No
+  createItem('Yes', 30, 20); // Top-left corner
+  createItem('No', 730, 20); // Top-right corner
+  createItem('Bye', 388, 230); // Center
+  // Numbers 0-9
+  const numbers = [...Array(10).keys()]; // Creates an array [0, 1, ..., 9]
+  numbers.forEach((number, index) => {
+    const x = 200 + index * 35; // Starting from the left, spaced 35px apart
+    createItem(number, x, 50);
+  });
+  
+  // Alphabet A-Z
+  const alphabet = Array.from(Array(26)).map((e, i) => i + 65);
+  const letters = alphabet.map((x) => String.fromCharCode(x));
+  letters.forEach((letter, index) => {
+    // Calculate circular (or semi-circular) positions for letters
+    const angle = (index / 26) * Math.PI; // Semi-circle from 0 to PI radians
+    const centerX = 400; // Center of the semi-circle
+    const centerY = 300;
+    const radius = 150;
+    const x = centerX - radius * Math.cos(angle) - 15; // Adjusted for item width
+    const y = centerY - radius * Math.sin(angle);
+    
+    createItem(letter, x, y);
+  });
+}
+
+function createItem(text, x, y) {
+  const item = document.createElement('div');
+  item.classList.add('ouija-item');
+  item.style.left = `${x}px`;
+  item.style.top = `${y}px`;
+  item.innerText = text;
+  ouijaBoard.appendChild(item);
+}
+
+// Position elements when the page loads
+positionElements();
+</script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
