@@ -3,6 +3,12 @@
 
 The Ouija Board project is a web-based application designed to simulate a Ouija board experience. Users can input a message, and the application will animate a response on the virtual Ouija board. This project combines modern web technologies with a touch of the supernatural to create an engaging user experience.
 
+Version 2
+
+![Ouija Board Demo](ouija2.gif)
+
+
+Version 1
 ![Ouija Board Demo](ouija.gif)
 
 ## Features
@@ -41,7 +47,9 @@ pip install -r requirements.txt
 
 4. Start the Flask application:
 ```bash
-flask run
+python app.py 
+# or
+python app2.py
 ```
 
 5. Open your web browser and navigate to `http://127.0.0.1:5000/` to see the application in action.
