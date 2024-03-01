@@ -1,0 +1,55 @@
+
+#ouijaBoard {
+position: relative;
+width: 800px;
+height: 530px;
+background: url('/static/images/ouija_800x530.png') no-repeat center center;
+background-size: cover;
+margin: auto;
+padding: 20px;
+}
+#planchette {
+position: absolute;
+width: 250px; /* Adjust based on your icon's size */
+height: 250px;
+background: url('/static/images/planchette_icon.png') no-repeat center center;
+background-size: contain;
+transition: all 2s ease; /* Smooth transition for moving */
+}
+.body {
+background-color: #08090a;
+}
+.ouija-container {
+position: relative;
+width: 800px;
+height: 530px;
+background: url('static/images/ouija_800x530.png') no-repeat center center;
+background-size: cover;
+margin: auto;
+padding: 20px;
+}
+
+.ouija-form {
+margin-top: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+form {
+margin-top: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+form input, form button {
+margin: 5px 0; /* Add some space around inputs and button */
+}
+
+.form-control.my-2, .form-control {
+width: 600px; /* Custom width */
+height: 50px; /* Larger height */
+padding: 10px; /* Larger padding for bigger text */
+font-size: 20px; /* Larger font size */
+}
