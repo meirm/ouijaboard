@@ -93,7 +93,7 @@ def ouija():
         session['session_id'] = uuid.uuid4()
     if request.method == 'GET':
         # Serve an HTML template (make sure you have an `index.html` in your templates folder)
-        return render_template('ouija.html')
+        return render_template('ouija2.html')
     elif request.method == 'POST':
         #check if we have a history object in the session
         if 'history' not in session:
