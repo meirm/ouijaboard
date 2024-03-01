@@ -5,13 +5,19 @@
   <!-- Include Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
+    .body {
+      background-color: #08090a;
+    }
     .ouija-container {
       max-width: 800px;
       height: 400px;
       position: relative;
-      background: black;
-      color: white;
+      /* Add background image */
+      background-image: url('/static/images/ouija_800x400_blank.png');
+      color: black;
       font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      font-size: 20px;
       margin: auto;
       padding: 20px;
     }
@@ -35,7 +41,7 @@
     }
   </style>
 </head>
-<body>
+<body class="body">
 
 <div class="container mt-5">
   <div id="ouijaBoard" class="ouija-container"></div>
@@ -43,7 +49,7 @@
   <form id="ouijaForm" class="text-center">
     <input type="text" id="messageInput" class="form-control my-2" placeholder="Enter your message here">
     <button type="button" class="btn btn-primary mb-2" onclick="animateMessage()">Send</button>
-    <input type="text" id="messageOutput" class="form-control" placeholder="Server response" readonly>
+    <input type="text" id="messageOutput" class="form-control" placeholder="Ouija's Response" readonly>
   </form>
 </div>
 
@@ -151,13 +157,13 @@ function animateMessageOutput(output) {
 
 function positionElements() {
   // Yes and No
-  createItem('Yes', 30, 20); // Top-left corner
-  createItem('No', 730, 20); // Top-right corner
+  createItem('Yes', 50, 180); // Top-left corner
+  createItem('No', 720, 180); // Top-right corner
   createItem('Bye', 388, 230); // Center
   // Numbers 0-9
   const numbers = [...Array(10).keys()]; // Creates an array [0, 1, ..., 9]
   numbers.forEach((number, index) => {
-    const x = 200 + index * 35; // Starting from the left, spaced 35px apart
+    const x = 230 + index * 35; // Starting from the left, spaced 35px apart
     createItem(number, x, 50);
   });
   
