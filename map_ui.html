@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ouija Board Animation</title>
+<style>
+  #ouijaBoard {
+    position: relative;
+    width: 800px;
+    height: 530px;
+    background: url('static/images/ouija_800x530.png') no-repeat center center;
+    background-size: cover;
+  }
+  #planchette {
+    position: absolute;
+    width: 250px; /* Adjust based on your icon's size */
+    height: 250px;
+    background: url('static/images/planchette_icon.png') no-repeat center center;
+    background-size: contain;
+    transition: all 2s ease; /* Smooth transition for moving */
+  }
+</style>
+</head>
+<body>
+
+<div id="ouijaBoard">
+  <div id="planchette"></div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const planchette = document.getElementById('planchette');
+        let currentPosition = { x: 400, y: 200, r: 0 }; // Initialize with rest position
+    
+        if ( 1 === 1 ){
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'a': // Move left
+                    currentPosition.x -= 5;
+                    break;
+                case 'd': // Move right
+                    currentPosition.x += 5;
+                    break;
+                case 'w': // Move up
+                    currentPosition.y -= 5;
+                    break;
+                case 's': // Move down
+                    currentPosition.y += 5;
+                    break;
+                case 'e': // Rotate counterclockwise
+                    currentPosition.r -= 5;
+                    break;
+                case 'r': // Rotate clockwise
+                    currentPosition.r += 5;
+                    break;
+            }
+            updatePlanchette();
+        });
+    }
+        function updatePlanchette() {
+            planchette.style.left = currentPosition.x + 'px';
+            planchette.style.top = currentPosition.y + 'px';
+            planchette.style.transform = `rotate(${currentPosition.r}deg)`;
+            
+            // Log current position and angle
+            console.log(`Current Position: x=${currentPosition.x}, y=${currentPosition.y}, angle=${currentPosition.r} degrees`);
+        }
+    
+        // Reset to rest position initially
+        updatePlanchette();
+        
+        // Your existing moveTo and spellWord functions here, if needed    
+        const positions = {
+            // Define positions for each letter/symbol on the board
+          'rest_position': { x: 275, y: 195, r: 0 }, // Add a rest position for the planchette
+          'A': { x: 80, y: 135, r: -35},
+          'B': { x: 115, y: 110,r: -30},
+          'C': { x: 150, y: 100, r: -25},
+          'D': { x: 180, y: 90, r: -20},
+          'E': { x: 213, y: 85, r: -15},
+          'F': { x: 240, y: 80, r: -5},
+          'G': { x: 275, y: 80, r: 0},
+          'H': { x: 312, y: 80, r: 5},
+          'I': { x: 340, y: 85, r: 10},
+          'J': { x: 365, y: 87, r: 15},
+          'K': { x: 400, y: 100, r: 20},
+          'L': { x: 430, y: 110, r: 25},
+          'M': { x: 470, y: 130, r: 30},
+          'N': { x: 85, y: 200, r: -30},
+          'O': { x: 115, y: 180,r: -25},
+          'P': { x: 145, y: 165, r: -25},
+          'Q': { x: 175, y: 150, r: -20},
+          'R': { x: 210, y: 140, r: -15},
+          'S': { x: 240, y: 135, r: -10},
+          'T': { x: 270, y: 130, r: 0},
+          'U': { x: 305, y: 130, r: 5},
+          'V': { x: 340, y: 135, r: 15},
+          'W': { x: 375, y: 145, r: 20},
+          'X': { x: 410, y: 160, r: 25},
+          'Y': { x: 440, y: 180, r: 30},
+          'Z': { x: 470, y: 200, r: 35},
+          // Add more positions for each letter/symbol
+          'Goodbye': { x: 470, y: 285, r: 255 },
+          'No': { x: 425, y: -20, r: 10 },
+          'Yes': { x: 135, y: -20, r: -10 },
+          '1': { x: 130, y: 265, r: 0},
+          '2': { x: 155, y: 265, r: 0},
+          '3': { x: 190, y: 265, r: 0},
+            '4': { x: 225, y: 265, r: 0},
+            '5': { x: 260, y: 265, r: 0},
+            '6': { x: 295, y: 265, r: 0},
+            '7': { x: 320, y: 265, r: 0},
+            '8': { x: 355, y: 265, r: 0},
+            '9': { x: 390, y: 265, r: 0},
+            '0': { x: 425, y: 265, r: 0},
+        };
+      
+        function moveTo(letter) {
+          const pos = positions[letter];
+          planchette.style.left = pos.x + 'px';
+          planchette.style.top = pos.y + 'px';
+          planchette.style.rotate = pos.r + 'deg';
+        }
+      
+        // Example: Move to 'A'
+        //moveTo('A');
+        
+        // To spell out a word, sequence the moves
+        function spellWord(word) {
+          let i = 0;
+          function moveNext() {
+            if (i < word.length) {
+                moveTo("rest_position");
+                setTimeout(() => {
+                    moveTo(word[i]);
+                    i++;
+                    setTimeout(moveNext, 1700); // Wait 1 second between moves
+                }, 1000);   
+            }else{
+                moveTo("rest_position");
+            }
+          }
+          moveNext();
+        }
+      //moveTo("No");
+      //setTimeout(() => {
+        // Example usage
+        //spellWord('A1M8B');
+      //}, 3000);
+    });
+      
+</script>
+
+</body>
+</html>
